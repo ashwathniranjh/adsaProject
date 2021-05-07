@@ -12,7 +12,7 @@ struct Cell
     Cell()
     {
         data = -1;
-        nextCell = nullptr;
+        nextCell = NULL;
     }
 };
 
@@ -27,8 +27,8 @@ struct Node
     {
         ckey = -1;
         rank = 0;
-        next = child = nullptr;
-        head = tail = nullptr;
+        next = child = NULL;
+        head = tail = NULL;
     }
 };
 
@@ -42,8 +42,8 @@ struct Head
 
     Head()
     {
-        queue = nullptr;
-        next = prev = suffix_min = nullptr;
+        queue = NULL;
+        next = prev = suffix_min = NULL;
         rank = 0;
     }
 };
@@ -83,7 +83,7 @@ class SoftHeap
 
 		bool isEmpty()
 		{
-			return (header == nullptr);
+			return (header == NULL);
 		}
 
 
@@ -93,10 +93,9 @@ void SoftHeap::insert(int key)
 {
     cout<<"Inserting Key"<<endl;
 	Node *q;
-    Cell *cell;
-    cell = new Cell();
+    Cell *cell = new Cell();
     cell->data = key;
-    cell->nextCell = nullptr;
+    cell->nextCell = NULL;
     cout<<"Check-1"<<endl;
 
     q = new Node();
@@ -107,29 +106,36 @@ void SoftHeap::insert(int key)
 
 	cout<<"Calling Meld"<<endl;
     this->meld(q);
-    cout<<"INsert Succesful"<<endl;
+    cout<<"Insert Succesful"<<endl;
 }
 
 
 void SoftHeap::fix_min_list(Head *head)
 {
 	Head *tmp_min;
-	if(head->next == tail)
+	if(head->next == tail){
+		cout<<"**1\n";
 		tmp_min = head;
-	else
+	}
+	else{
 		tmp_min = head->next->suffix_min;
+		cout<<"**2\n";
+	}
+		
 	
-	while(head != header)
+	while(head != NULL && header != head )
 	{
+		cout<<"**3\n";
 		if(head->queue->ckey < tmp_min->queue->ckey)
 		{
+			cout<<"**4\n";
 			tmp_min = head;
 		}
 		
 		head->suffix_min = tmp_min;
 		head = head->prev;
 	}
-	cout<<"fix-min-lkist successful"<<endl;
+	cout<<"fix-min-list successful"<<endl;
 }
 
 
@@ -138,7 +144,7 @@ void SoftHeap::meld(Node *q)
 {
     
 	cout<<"Meld Check - 1"<<endl;
-	Head *head, *prev_head, *to_head = header->next;
+	Head *head= header->next, *prev_head= header->next, *to_head = header->next;
 	cout<<"CECNOEC"<<endl;
     Node *top, *bottom;
     cout<<"wronwernc"<<endl;
@@ -176,19 +182,25 @@ void SoftHeap::meld(Node *q)
         q->head = top->head;
         q->tail = top->tail;
         to_head = to_head->next;
-        cout<<"Meld Check - 4"<<endl;
+        cout<<"Meld Check - 4"<<q->rank<<endl;
     }
-
-    if(prev_head == to_head->prev)
-        head = new Head();
-    else
-        head = prev_head->next;
+	cout<<"*****\n";
+    if(prev_head == to_head->prev){
+		head = new Head();
+		cout<<"*****1\n";
+	}   
+    else{
+		cout<<"*****2\n";
+		head = prev_head->next;
+	}
+        
     
     head->queue = q;
     head->rank = q->rank;
     head->next = to_head;
     prev_head->next = head;
     to_head->prev = head;
+	cout<<"*****3\n";
     this->fix_min_list(head);
     cout<<"Meld Successful"<<endl;
 }
@@ -196,14 +208,14 @@ void SoftHeap::meld(Node *q)
 Node* SoftHeap::sift(Node *v)
 {
 	Node *tmp;
-	v->head = v->tail = nullptr;
-	if(v->next == nullptr && v->child == nullptr)
+	v->head = v->tail = NULL;
+	if(v->next == NULL && v->child == NULL)
 	{
 		v->ckey = std::numeric_limits<int>::max();
 		return v;
 	}
 	
-	v->next = sift(v->next);
+	v->next = this->sift(v->next);
 	
 	if(v->next->ckey > v->child->ckey)
 	{
@@ -212,9 +224,9 @@ Node* SoftHeap::sift(Node *v)
 		v->next = tmp;
 	}
 	
-	if(v->rank > r && (v->rank % 2 == 1 || v->child->rank < v->rank-1))
+	if(v->rank > this->r && (v->rank % 2 == 1 || v->child->rank < v->rank-1))
 	{
-		v->next = sift(v->next);
+		v->next = this->sift(v->next);
 		if(v->next->ckey > v->child->ckey)
 		{
 			tmp = v->child;
@@ -222,12 +234,12 @@ Node* SoftHeap::sift(Node *v)
 			v->next = tmp;
 		}
 		
-		if(v->next->ckey != std::numeric_limits<int>::max() && v->next->head == nullptr)
+		if(v->next->ckey != std::numeric_limits<int>::max() && v->next->head != NULL)
 		{
 			v->next->tail->nextCell = v->head;
 			v->head = v->next->head;
 			
-			if(v->tail == nullptr)
+			if(v->tail == NULL)
 				v->tail = v->next->tail;
 			
 			v->ckey = v->next->ckey;
@@ -239,8 +251,8 @@ Node* SoftHeap::sift(Node *v)
 	{
 		if(v->child->ckey == std::numeric_limits<int>::max())
 		{
-			v->child = nullptr;
-			v->next = nullptr;
+			v->child = NULL;
+			v->next = NULL;
 		}
 		else
 		{
@@ -256,12 +268,12 @@ int SoftHeap::deleteMin()
 {
 	Node *tmp;
 	int min, childcount;
-	Head *h = header->next->suffix_min;
-	while(h->queue->head != nullptr)
+	Head *h = this->header->next->suffix_min;
+	while(h->queue->head != NULL)
 	{
 		tmp = h->queue;
 		childcount = 0;
-		while(tmp->next != nullptr)
+		while(tmp->next != NULL)
 		{
 			tmp = tmp->next;
 			childcount++;
@@ -270,11 +282,11 @@ int SoftHeap::deleteMin()
 		{
 			h->prev->next = h->next;
 			h->next->prev = h->prev;
-			fix_min_list(h->prev);
+			this->fix_min_list(h->prev);
 			tmp = h->queue;
-			while(tmp->next != nullptr)
+			while(tmp->next != NULL)
 			{
-				meld(tmp->child);
+				this->meld(tmp->child);
 				tmp = tmp->next;
 			}
 		}
@@ -294,8 +306,8 @@ int SoftHeap::deleteMin()
 	
 	min = h->queue->head->data;
 	h->queue->head = h->queue->head->nextCell;
-	if(h->queue->head == nullptr) 
-		h->queue->tail = nullptr;	
+	if(h->queue->head == NULL) 
+		h->queue->tail = NULL;	
 		
 	return min;
 }
@@ -304,7 +316,7 @@ int SoftHeap::deleteMin()
 int main()
 {
 	SoftHeap H1(5);
-	vector<int> arr(100);
+	vector<int> arr(5);
 	iota(arr.begin(), arr.end(), 1);
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   	shuffle (arr.begin(), arr.end(), std::default_random_engine(seed));
