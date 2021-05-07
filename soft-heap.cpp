@@ -50,13 +50,13 @@ struct Head
 
 class SoftHeap
 {
-    private:
+    public:
         Head *header, *tail;
         int r;
         void fix_min_list(Head*);
         Node *sift(Node* );
     
-    public:
+    
         SoftHeap()
         {
             header = new Head();
@@ -144,12 +144,12 @@ void SoftHeap::meld(Node *q)
 {
     
 	cout<<"Meld Check - 1"<<endl;
-	Head *head= header->next, *prev_head= header->next, *to_head = header->next;
+	Head *head, *prev_head, *to_head = header->next;
 	cout<<"CECNOEC"<<endl;
     Node *top, *bottom;
-    cout<<"wronwernc"<<endl;
-    cout<<q->rank<<endl;
-    cout<<to_head->rank;
+    // cout<<"wronwernc"<<endl;
+    // cout<<q->rank<<endl;
+    // cout<<to_head->rank;
     while(q->rank > to_head->rank)
     {
     	cout<<"Meld Check - 2"<<endl;
@@ -159,7 +159,9 @@ void SoftHeap::meld(Node *q)
     
     cout<<"Check - 5"<<endl;
     prev_head = to_head->prev;
-    
+    if(prev_head){
+		cout<<prev_head->rank<<endl;
+	}
     while(q->rank == to_head->rank)
     {
         cout<<"Meld Check - 3"<<endl;
@@ -192,14 +194,14 @@ void SoftHeap::meld(Node *q)
     else{
 		cout<<"*****2\n";
 		head = prev_head->next;
+		cout<<"*****21\n";
 	}
-        
-    
     head->queue = q;
     head->rank = q->rank;
     head->next = to_head;
     prev_head->next = head;
     to_head->prev = head;
+	head->prev = prev_head;
 	cout<<"*****3\n";
     this->fix_min_list(head);
     cout<<"Meld Successful"<<endl;
@@ -266,6 +268,7 @@ Node* SoftHeap::sift(Node *v)
 
 int SoftHeap::deleteMin()
 {
+	cout<<"iter\n";
 	Node *tmp;
 	int min, childcount;
 	Head *h = this->header->next->suffix_min;
@@ -301,6 +304,7 @@ int SoftHeap::deleteMin()
 			}
 			fix_min_list(h);
 		}
+		
 		h = header->next->suffix_min;
 	}
 	
@@ -316,10 +320,12 @@ int SoftHeap::deleteMin()
 int main()
 {
 	SoftHeap H1(5);
-	vector<int> arr(5);
-	iota(arr.begin(), arr.end(), 1);
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  	shuffle (arr.begin(), arr.end(), std::default_random_engine(seed));
+	//vector<int> arr(5);
+	int arr[] = {5,1,2,4,3};
+	
+	//iota(arr.begin(), arr.end(), 1);
+	//unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  	//shuffle (arr.begin(), arr.end(), std::default_random_engine(seed));
 
 	for(auto &i : arr)
 	{
@@ -327,5 +333,6 @@ int main()
 		cout<<"INserted - "<<i<<endl;
 		assert(!H1.isEmpty());
 	}
+	cout<<H1.deleteMin()<<endl;
 }
 
