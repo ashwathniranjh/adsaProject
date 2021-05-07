@@ -43,7 +43,7 @@ class WeakHeap
             
             int x=1;
 
-            while( ((2*x) + reverse[x]) < m){
+            while( ((2*x) + reverse[x]) < size-1){
                 x=(2*x) + reverse[x];
             }
 
@@ -81,11 +81,11 @@ class WeakHeap
 
             decreaseKey(idx, INT_MIN);
 
-            Display();
+            //Display();
 
             extractMin();
 
-            Display();
+            //Display();
 
             /* restoreWeakHeap(0);
             Display(); */
@@ -153,13 +153,19 @@ int main(){
     W.Display();
     cout<<endl<<"Extracted min element: "<<W.extractMin();
     W.Display();
-    W.decreaseKey(4,1);
-    W.Display();
+    /* W.decreaseKey(4,1);
+    W.Display(); */
     /* cout<<endl<<"Deleted "<<W.DeleteElement(4)<<" at index 4";
     W.Display();
     W.decreaseKey(5,3);
     W.Display(); */
     cout<<endl<<"Extracted min element: "<<W.extractMin();
+    W.Display();
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
+    W.Display();
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
+    W.Display();
+    cout<<endl<<"Deleted "<<W.DeleteElement(2)<<" at index 4";
     W.Display();
     
 
