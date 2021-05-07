@@ -23,6 +23,14 @@ class WeakHeap
             return floor(j/2);
         }
 
+        int returnMin(){
+
+            if(size==0)
+                return -1;
+
+            return heap[0];
+        }
+
         void Merge(int i, int j){
 
             if(heap[i]>heap[j]){
@@ -67,6 +75,27 @@ class WeakHeap
             }
         }
 
+        int DeleteElement(int idx){
+
+            int x=heap[idx];
+
+            decreaseKey(idx, INT_MIN);
+
+            Display();
+
+            extractMin();
+
+            Display();
+
+            /* restoreWeakHeap(0);
+            Display(); */
+            
+            /* int y=heap[size-1];
+            decreaseKey(size-1, y); */
+
+            return x;
+        }
+
         void Insert(int key){
 
             heap[size]=key;
@@ -85,7 +114,7 @@ class WeakHeap
 
         void Display(){
 
-            cout<<"\n Displaying weak heap: ";
+            cout<<"\n Weak heap: ";
             for(int i=0;i<size;i++){
                 cout<<heap[i]<<" ";
             }
@@ -112,6 +141,8 @@ int main(){
     W.Display();
     W.Insert(9);
     W.Display();
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
+    W.Display();
     W.Insert(10);
     W.Display();
     W.Insert(1);
@@ -120,9 +151,15 @@ int main(){
     W.Display();
     W.Insert(3);
     W.Display();
-    cout<<endl<<"Deleted min element: "<<W.extractMin();
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
     W.Display();
-    W.decreaseKey(0,1);
+    W.decreaseKey(4,1);
+    W.Display();
+    /* cout<<endl<<"Deleted "<<W.DeleteElement(4)<<" at index 4";
+    W.Display();
+    W.decreaseKey(5,3);
+    W.Display(); */
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
     W.Display();
     
 
