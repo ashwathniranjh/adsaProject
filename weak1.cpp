@@ -33,7 +33,7 @@ class WeakHeap
 
         void Merge(int i, int j){
 
-            if(heap[i]>heap[j]){
+            if(heap[i]>heap[j] && size!=2){
                 swap(heap[i],heap[j]);
                 reverse[j]=(!reverse[j]);
             }
@@ -86,12 +86,6 @@ class WeakHeap
             extractMin();
 
             //Display();
-
-            /* restoreWeakHeap(0);
-            Display(); */
-            
-            /* int y=heap[size-1];
-            decreaseKey(size-1, y); */
 
             return x;
         }
@@ -165,7 +159,13 @@ int main(){
     W.Display();
     cout<<endl<<"Extracted min element: "<<W.extractMin();
     W.Display();
-    cout<<endl<<"Deleted "<<W.DeleteElement(2)<<" at index 4";
+    /* cout<<endl<<"Deleted "<<W.DeleteElement(2)<<" at index 4";
+    W.Display(); */
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
+    W.Display();
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
+    W.Display();
+    cout<<endl<<"Extracted min element: "<<W.extractMin();
     W.Display();
     
 
